@@ -19,7 +19,32 @@
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
+        <div class="modal hide fade" id="addModal" ng-controller="AddCtrl">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Add your own Profile</h3>
+          </div>
+          <form>
+              <div class="modal-body">
+                <input type="text" ng-model="profileName" name="profileName" required="required" placeHolder="Profile Name" ui-validate="{free: checkProfileName, length: checkLength}">
+                <span ng-show="form.profileName.$error.length">too short</span>
+                <span ng-show="form.profileName.$error.free">Profile already exists</span>
+                <span>{{form.profileName.$error|json}}</span>
+                <br />
+                <input ng-model="email" type="email" placeholder="Email to register it to" required="required">
+                
+              </div>
+              <div class="modal-footer">
+                <a href="#" class="btn close">Close</a>
+                <button type="submit" class="btn btn-primary">Add Profile</button>
+              </div>
+            </form>
+        </div>
         <div class="container" ng-controller="MainCtrl">
+            <div class="span pull-right">
+                <a href="#editModal" role="button" data-toggle="modal" class="btn btn-inverse"><span class="icon-edit icon-white"></span>&nbsp;Edit</a>
+                <a href="#addModal" role="button" data-toggle="modal" class="btn btn-inverse"><span class="icon-plus icon-white"></span>&nbsp;Add</a>
+            </div>
             <div class="row">
                 <div ng-view>
                 </div>

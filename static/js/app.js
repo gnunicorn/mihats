@@ -1,4 +1,7 @@
 angular.module('app.services', ['ngResource', 'ui']).
+  factory("Profile", function($resource){
+    return $resource("api/v1/profile/:profileID", {});
+  }).
   directive('twModal', function() {
     return {
       scope: true,
@@ -52,9 +55,21 @@ var crowdbetApp = angular.module('app', ["app.services"]).
   config(function($routeProvider) {
      $routeProvider.
        when('/', {controller:"HomeCtrl", templateUrl:'tmpl/home.tmpl'}).
-       when('/:userId', {controller:"ShowUser", templateUrl:'tmpl/user.tmpl'}).
-       when('/:userId/:editKey', {controller:"EditCtrl", templateUrl:'tmpl/edit.tmpl'}).
+       when('/:profileId', {controller:"ShowProfile", templateUrl:'tmpl/profile.tmpl'}).
+       when('/:profileId/:editKey', {controller:"EditCtrl", templateUrl:'tmpl/edit.tmpl'}).
       otherwise({redirectTo:'/'});
+  }).
+  controller ("AddCtrl", function($scope) {
+    $scope.checkLength = function() {
+      return $scope.profileName && $scope.profileName.length > 5;
+    };
+    $scope.checkProfileName = function() {
+      return false;
+    };
+  }).
+  controller ("ShowProfile", function($scope, Profile, $route) {
+    $scope.profile = Profile.get({profileID: $route.current.params.profileId});
+
   }).
   controller ("HomeCtrl", function($scope, appState) {
     $scope.app_name = appState.app_name;
