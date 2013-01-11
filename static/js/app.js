@@ -51,11 +51,14 @@ angular.module('app.services', ['ngResource', 'ui']).
 var crowdbetApp = angular.module('app', ["app.services"]).
   config(function($routeProvider) {
      $routeProvider.
-//       when('/', {controller:MainCtrl, templateUrl:'main.html'}).
-// //      when('/edit/:projectId', {controller:EditCtrl, templateUrl:'detail.html'}).
-// //      when('/new', {controller:CreateCtrl, templateUrl:'detail.html'}).
+       when('/', {controller:"HomeCtrl", templateUrl:'tmpl/home.tmpl'}).
+       when('/:userId', {controller:"ShowUser", templateUrl:'tmpl/user.tmpl'}).
+       when('/:userId/:editKey', {controller:"EditCtrl", templateUrl:'tmpl/edit.tmpl'}).
       otherwise({redirectTo:'/'});
   }).
+  controller ("HomeCtrl", function($scope, appState) {
+    $scope.app_name = appState.app_name;
+  }).
   controller ("MainCtrl", function ($scope, $location, appState) {
-    $scope.app_name = "My first angular App";
+    appState.app_name = $scope.app_name = "miHats";
   });

@@ -20,13 +20,15 @@
     </head>
     <body>
         <div class="container" ng-controller="MainCtrl">
-          <div class="row">
-            <h1>{{app_name}}</h1>
-          </div>
+            <div class="row">
+                <div ng-view>
+                </div>
+            </div>
           <hr>
 
           <footer>
-              <p>&copy; {{app_name}} 2012</p>
+              <p>&copy; 
+              {{app_name}} 2012</p>
           </footer>
         </div> <!-- /container -->
       </div>
