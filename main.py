@@ -8,29 +8,51 @@ import webapp2
 import models
 
 
-class CheckProfile(webapp2.RequestHandler):
+class ProfileBase:
+    def _get_profile(self, params):
+        try:
+            profile_name = self.request.GET.get("profile_name").lower()
+            if not profile_name:
+                raise ValueError()
+            key = Key(models.Profile, profile_name)
+            model = key.get()
+            if not model:
+                raise ValueError()
+            return model
+        except (KeyError, ValueError):
+            raise webapp2.abort(404, "Profile not found")
+
+    def _can_edit(self, model, params):
+        edit_key = params.get("key")
+
+        if not edit_key:
+            raise ValueError("Missing 'key' to verify editing")
+
+        return model.edit_key == edit_key
+
+    def _render_model(self, model):
+        return {"profile_name": model.key.string_id(),
+                "theme": model.theme,
+                "current_hats": [x.as_json() for x in model.current_hats],
+                "former_hats": [x.as_json() for x in model.former_hats]}
+
+
+class CheckProfile(ProfileBase, webapp2.RequestHandler):
     @verified_api_request
     def get(self):
-        profile_name = self.request.GET.get("profile_name").lower()
-        if not profile_name:
-            raise ValueError("No 'profile_name' given to check for.")
-        profile = Key(models.Profile, profile_name).get()
-        return profile is not None
+        try:
+            model = self._get_profile(self.request.GET)
+        except Exception:
+            return False
+        else:
+            return model is not None
 
 
-class CheckEditRights(webapp2.RequestHandler):
+class CheckEditRights(ProfileBase, webapp2.RequestHandler):
     @verified_api_request
     def get(self):
-        profile_name = self.request.GET.get("profile_name").lower()
-        edit_key = self.request.GET.get("key")
-
-        if not profile_name or not edit_key:
-            raise ValueError("please specify your 'profile_name' and your 'key'")
-
-        profile = Key(models.Profile, profile_name).get()
-        if not profile:
-            raise ValueError("Profile unknown.")
-        return profile.edit_key == edit_key
+        profile = self._get_model(self.request.GET)
+        return self._can_edit(profile, self.request.GET)
 
 
 class CreateProfile(webapp2.RequestHandler):
@@ -38,6 +60,14 @@ class CreateProfile(webapp2.RequestHandler):
     @verified_api_request
     @understand_post
     def post(self, params):
+        try:
+            model = self._get_model(params)
+        except Exception:
+            pass
+        else:
+            if model:
+                raise webapp2.abort(400, "Profile already exists")
+
         profile_name = params.get("profile_name").lower()
         email = params.get("email").lower()
         if not profile_name or not email:
@@ -51,16 +81,28 @@ class CreateProfile(webapp2.RequestHandler):
         return {"profile_name": profile_name, "key": profile.edit_key}
 
 
-class EditProfile(webapp2.RequestHandler):
+class EditProfile(ProfileBase, webapp2.RequestHandler):
 
     @verified_api_request
     def get(self):
-        profile_name = self.request.GET.get("profile_name").lower()
-        key = Key(models.Profile, profile_name)
-        model = key.get()
-        if not model:
-            raise webapp2.abort("Profile not found", code=404)
-        return {"profile_name": key.string_id(), }
+        return self._render_model(self._get_profile(self.request.GET))
+
+    @verified_api_request
+    @understand_post
+    def post(self, params):
+        model = self._get_profile(params)
+        if not self._can_edit(model, params):
+            raise webapp2.abort(403, "wrong key specified. Editing denied.")
+        to_save = False
+        for x in ("theme", "current_hats", "former_hats"):
+            attr = params.get(x)
+            if attr:
+                to_save = True
+                setattr(model, x, attr)
+
+        if to_save:
+            model.put()
+        return self._render_model(model)
 
 
 class MainHello(webapp2.RequestHandler):

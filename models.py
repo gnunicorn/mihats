@@ -10,10 +10,17 @@ class Hat(ndb.Model):
     since = ndb.StringProperty('s', required=False)
     until = ndb.StringProperty('u', required=False)
 
+    def as_json(self):
+        return dict([(x, getattr(self, x)) \
+            for x in ('what', 'what_link', 'where', 'where_link', 'since', 'until')])
+
 
 class Profile(ndb.Model):
     # keyname is profile id string
+    added = ndb.DateTimeProperty('a', auto_now_add=True)
+    last_change = ndb.DateTimeProperty('c', auto_now=True)
     owner_email = ndb.StringProperty('o')
     edit_key = ndb.StringProperty('e')
-    current_hats = ndb.StructuredProperty(Hat)
-    former_hats = ndb.StructuredProperty(Hat)
+    theme = ndb.StringProperty('t')
+    current_hats = ndb.StructuredProperty(Hat, repeated=True)
+    former_hats = ndb.StructuredProperty(Hat, repeated=True)
