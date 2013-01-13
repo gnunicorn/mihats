@@ -2,6 +2,48 @@ angular.module('app.services', ['ngResource', 'ui']).
   factory("Profile", function($resource){
     return $resource("api/v1/profile/:profileID", {});
   }).
+  directive("uniqueProfile", function($http) {
+    return {
+      //restrict: 'E',
+      require: 'ngModel',
+      link: function(scope, elem, attr, ctrl) {
+        
+        scope.$watch(attr.ngModel, function(value) {
+          if (!value) {
+            return;
+          }
+          if (value.length < 5) {
+            ctrl.$setValidity('notLongEnough', false);
+            return;
+          }
+          var toId;
+
+          ctrl.$setValidity('notLongEnough', true);
+          if(toId) clearTimeout(toId);
+
+          toId = setTimeout(function(){
+            toId = false;
+            scope.checkingProfileName = true;
+            scope.nameChecked = false;
+            // call to some API that returns { isValid: true } or { isValid: false }
+            $http.get('/api/v1/profile/exists?profile_name='+ value
+              ).success(function(data) {
+                scope.checkingProfileName = false;
+                var res = false;
+                if (data.result) {
+                  res = true;
+                }
+                ctrl.$setValidity('notUniqueProfile', !res);
+                if (!res) scope.nameChecked = "checked";
+                if(!scope.$$phase) {
+                  scope.$digest();
+                }
+            });
+          }, 200);
+        });
+      }
+    };
+  }).
   directive('twModal', function() {
     return {
       scope: true,
@@ -59,12 +101,20 @@ var crowdbetApp = angular.module('app', ["app.services"]).
        when('/:profileId/:editKey', {controller:"EditCtrl", templateUrl:'tmpl/edit.tmpl'}).
       otherwise({redirectTo:'/'});
   }).
-  controller ("AddCtrl", function($scope) {
-    $scope.checkLength = function() {
-      return $scope.profileName && $scope.profileName.length > 5;
-    };
-    $scope.checkProfileName = function() {
-      return false;
+  controller ("AddCtrl", function($scope, $location) {
+    $scope.createProfile = function() {
+
+      $.post("/api/v1/profile/create", {profile_name:$scope.profileName, email:$scope.email},
+        function(resp) {
+          var profile = resp.result;
+          if(profile){
+            $location.path("/" + profile.profile_name + "/" + profile.key);
+            if(!$scope.$$phase){
+              $scope.$digest();
+            }
+          }
+          $scope.dismiss();
+        });
     };
   }).
   controller ("ShowProfile", function($scope, Profile, $route) {
