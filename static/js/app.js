@@ -2,6 +2,11 @@ angular.module('app.services', ['ngResource', 'ui']).
   factory("Profile", function($resource){
     return $resource("api/v1/profile/", {});
   }).
+  filter("defaults", function() {
+    return function(input, def) {
+      return input || def;
+    };
+  }).
   directive("uniqueProfile", function($http) {
     return {
       //restrict: 'E',
