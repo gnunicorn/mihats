@@ -33,6 +33,7 @@ class ProfileBase:
     def _render_model(self, model):
         return {"profile_name": model.key.string_id(),
                 "theme": model.theme,
+                "images": model.images,
                 "current_hats": [x.as_json() for x in model.current_hats],
                 "former_hats": [x.as_json() for x in model.former_hats]}
 

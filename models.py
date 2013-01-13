@@ -23,5 +23,6 @@ class Profile(ndb.Model):
     owner_email = ndb.StringProperty('o')
     edit_key = ndb.StringProperty('e')
     theme = ndb.StringProperty('t')
+    images = ndb.StringProperty('i', repeated=True)
     current_hats = ndb.StructuredProperty(Hat, repeated=True)
     former_hats = ndb.StructuredProperty(Hat, repeated=True)

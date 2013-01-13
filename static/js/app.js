@@ -143,6 +143,11 @@ var crowdbetApp = angular.module('app', ["app.services"]).
             if(!$scope.$$phase){
               $scope.$digest();
             }
+            $.supersized({
+              slides: $.map(profile.images, function(x, idx) {
+                return {'image': x};
+              })
+            });
           }
         });
 
