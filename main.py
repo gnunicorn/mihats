@@ -51,6 +51,18 @@ class CreateProfile(webapp2.RequestHandler):
         return {"profile_name": profile_name, "key": profile.edit_key}
 
 
+class EditProfile(webapp2.RequestHandler):
+
+    @verified_api_request
+    def get(self):
+        profile_name = self.request.GET.get("profile_name").lower()
+        key = Key(models.Profile, profile_name)
+        model = key.get()
+        if not model:
+            raise webapp2.abort("Profile not found", code=404)
+        return {"profile_name": key.string_id(), }
+
+
 class MainHello(webapp2.RequestHandler):
 
     @verified_api_request
@@ -65,5 +77,6 @@ app = webapp2.WSGIApplication([
     ('/api/v1/profile/exists', CheckProfile),
     ('/api/v1/profile/can_edit', CheckEditRights),
     ('/api/v1/profile/create', CreateProfile),
+    ('/api/v1/profile/', EditProfile),
     ('./*', MainHello)
 ], debug=True)

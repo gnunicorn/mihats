@@ -7,8 +7,8 @@ class Hat(ndb.Model):
     what_link = ndb.StringProperty('wal', required=False)
     where = ndb.StringProperty('we')
     where_link = ndb.StringProperty('wel', required=False)
-    since = ndb.DateTimeProperty('s', required=False)
-    until = ndb.DateTimeProperty('u', required=False)
+    since = ndb.StringProperty('s', required=False)
+    until = ndb.StringProperty('u', required=False)
 
 
 class Profile(ndb.Model):

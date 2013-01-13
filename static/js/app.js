@@ -1,6 +1,6 @@
 angular.module('app.services', ['ngResource', 'ui']).
   factory("Profile", function($resource){
-    return $resource("api/v1/profile/:profileID", {});
+    return $resource("api/v1/profile/", {});
   }).
   directive("uniqueProfile", function($http) {
     return {
@@ -97,8 +97,8 @@ var crowdbetApp = angular.module('app', ["app.services"]).
   config(function($routeProvider) {
      $routeProvider.
        when('/', {controller:"HomeCtrl", templateUrl:'tmpl/home.tmpl'}).
-       when('/:profileId', {controller:"ShowProfile", templateUrl:'tmpl/profile.tmpl'}).
-       when('/:profileId/:editKey', {controller:"EditCtrl", templateUrl:'tmpl/edit.tmpl'}).
+       when('/:profileId', {controller:"ShowProfileCtrl", templateUrl:'tmpl/profile.tmpl'}).
+       when('/:profileId/:editKey', {controller:"EditProfileCtrl", templateUrl:'tmpl/edit.tmpl'}).
       otherwise({redirectTo:'/'});
   }).
   controller ("AddCtrl", function($scope, $location) {
@@ -117,8 +117,29 @@ var crowdbetApp = angular.module('app', ["app.services"]).
         });
     };
   }).
-  controller ("ShowProfile", function($scope, Profile, $route) {
-    $scope.profile = Profile.get({profileID: $route.current.params.profileId});
+  controller ("EditProfileCtrl", function($scope, Profile, $route) {
+    $.getJSON("/api/v1/profile/", {profile_name:$route.current.params.profileId},
+        function(resp) {
+          var profile = resp.result;
+          if(profile){
+            $scope.profile = profile;
+            if(!$scope.$$phase){
+              $scope.$digest();
+            }
+          }
+        });
+  }).
+  controller ("ShowProfileCtrl", function($scope, Profile, $route) {
+    $.getJSON("/api/v1/profile/", {profile_name:$route.current.params.profileId},
+        function(resp) {
+          var profile = resp.result;
+          if(profile){
+            $scope.profile = profile;
+            if(!$scope.$$phase){
+              $scope.$digest();
+            }
+          }
+        });
 
   }).
   controller ("HomeCtrl", function($scope, appState) {
