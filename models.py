@@ -6,6 +6,7 @@ class Hat(ndb.Model):
     what = ndb.StringProperty('wa')
     what_link = ndb.StringProperty('wal', required=False)
     where = ndb.StringProperty('we')
+    preposition = ndb.StringProperty("p")
     where_link = ndb.StringProperty('wel', required=False)
     since = ndb.StringProperty('s', required=False)
     until = ndb.StringProperty('u', required=False)
