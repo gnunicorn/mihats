@@ -1,14 +1,51 @@
 
-<h1>{{profile.profile_name}}</h1>
+<div class="container">
+	<div class="row">
+		<div class="span4 offset2 {{profile.theme}}">
+			<div class="container-fluid">
+				<h1>{{profile.profile_name}}</h1>
 
-<div class="row">
-	<div class="span5">
-		<h2>mi current hats</h2>
-	</div>
-</div>
+				<div class="row" ng-show="profile.current_hats">
+					<div class="span5">
+						<h2>current hats</h2>
+						<ul>
+							<li ng-repeat="hat in profile.current_hats">
+								is
+								<ng-switch on="hat.what_link">
+									<span ng-switch-when="">{{hat.what}}</span>
+									<a ng-switch-otherwise target="_blank" href="{{hat.what_link}}">{{hat.what}}</a>
+								</ng-switch>
+								{{hat.preposition | defaults:"at"}}
+								<ng-switch on="hat.where_link">
+									<span ng-switch-when="">{{hat.where}}</span>
+									<a ng-switch-otherwise target="_blank" href="{{hat.where_link}}">{{hat.where}}</a>
+								</ng-switch>
+								<span ng-show="hat.since">since {{hat.since}}</span>
+							</li>
+						</ul>
+					</div>
+				</div>
 
-<div class="row">
-	<div class="span5">
-		<h2>mi former hats</h2>
+				<div class="row" ng-show="profile.former_hats">
+					<div class="span5">
+						<h2>former hats</h2>
+							<li ng-repeat="hat in profile.former_hats">
+								was
+								<ng-switch on="hat.what_link">
+									<span ng-switch-when="">{{hat.what}}</span>
+									<a ng-switch-otherwise target="_blank" href="{{hat.what_link}}">{{hat.what}}</a>
+								</ng-switch>
+								{{hat.preposition | defaults:"at"}}
+								<ng-switch on="hat.where_link">
+									<span ng-switch-when="">{{hat.where}}</span>
+									<a ng-switch-otherwise target="_blank" href="{{hat.where_link}}">{{hat.where}}</a>
+								</ng-switch>
+								<span ng-show="hat.since">since {{hat.since}}</span>
+								<span ng-show="hat.until">until {{hat.until}}</span>
+							</li>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
