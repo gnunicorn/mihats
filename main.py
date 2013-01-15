@@ -120,6 +120,7 @@ app = webapp2.WSGIApplication([
     ('/api/v1/profile/exists', CheckProfile),
     ('/api/v1/profile/can_edit', CheckEditRights),
     ('/api/v1/profile/create', CreateProfile),
-    ('/api/v1/profile+', EditProfile),
+    ('/api/v1/profile/', EditProfile),
+    ('/api/v1/profile', EditProfile),
     ('./*', MainHello)
 ], debug=True)
