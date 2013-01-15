@@ -1,3 +1,37 @@
-#supersized-loader {
-	display: none;
+
+.theme {
+	margin: 10% auto;
+	background: url("/img/bg-black.png") repeat;
+	color: white;
+	padding: 30px;
+	width: 60	0px;
+}
+
+.theme h1,
+.theme h2,
+.theme h3,
+.theme h4 {
+	color: white;
+}
+
+.theme a,
+.theme a:hover,
+.theme a:visited {
+	color: #fe57a1;
+}
+
+body {
+	padding-bottom: 50px;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	height: 30px;
+	text-align: center;
+	padding: 10px;
+	background: url("/img/bg-black.png") repeat;
+	color: white;
 }
