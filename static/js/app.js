@@ -180,9 +180,17 @@ var crowdbetApp = angular.module('app', ["app.services"]).
     });
 
     $scope.checkEditable = function() {
+      $scope.unlocked = $scope.errored = false;
+      $scope.loading = true;
       $.get("/api/v1/profile/can_edit", {profile_name: $scope.profileID,
             key:$scope.key}, function(resp) {
+              $scope.loading = false;
               $scope.unlocked = resp.result;
+              
+              if (!$scope.unlocked) {
+                $scope.errored = true;
+              }
+
               if(!$scope.$$phase){
                 $scope.$digest();
               }

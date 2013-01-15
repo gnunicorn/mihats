@@ -27,7 +27,13 @@
             <h3>Unlock to Edit this Profile</h3>
           </div>
           <div class="modal-body">
-            <input type="text" placeholder="Edit Key" required="required" ng-model="key" ng-disabled="unlocked">
+            <div class="alert alert-error" ng-show="errored">
+              <strong>Failed!</strong> This was not the correct key.
+            </div>
+            <div class="alert alert-success" ng-show="unlocked">
+              <strong>Great!</strong> You unlocked this profile. Click to edit this Profile. 
+            </div>
+            <input type="text" placeholder="Edit Key" required="required" ng-model="key" ng-disabled="unlocked"><span ng-show="loading">Checking ...</span>
           </div>
           <div class="modal-footer">
             <a href="#" class="btn close">Close</a>
