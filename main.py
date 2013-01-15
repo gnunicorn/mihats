@@ -11,7 +11,7 @@ import models
 class ProfileBase:
     def _get_profile(self, params):
         try:
-            profile_name = self.request.GET.get("profile_name").lower()
+            profile_name = params.get("profile_name").lower()
             if not profile_name:
                 raise ValueError()
             key = Key(models.Profile, profile_name)
@@ -120,6 +120,6 @@ app = webapp2.WSGIApplication([
     ('/api/v1/profile/exists', CheckProfile),
     ('/api/v1/profile/can_edit', CheckEditRights),
     ('/api/v1/profile/create', CreateProfile),
-    ('/api/v1/profile/', EditProfile),
+    ('/api/v1/profile+', EditProfile),
     ('./*', MainHello)
 ], debug=True)

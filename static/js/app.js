@@ -1,6 +1,6 @@
 angular.module('app.services', ['ngResource', 'ui']).
   factory("Profile", function($resource){
-    return $resource("api/v1/profile/", {});
+    return $resource("api/v1/profile/", {_raw:1});
   }).
   filter("defaults", function() {
     return function(input, def) {
@@ -198,18 +198,37 @@ var crowdbetApp = angular.module('app', ["app.services"]).
     };
   }).
   controller ("EditProfileCtrl", function($scope, Profile, $route) {
-    $.getJSON("/api/v1/profile/", {profile_name:$route.current.params.profileId},
-        function(resp) {
-          var profile = resp.result;
-          if(profile){
-            $scope.profile = profile;
-            if(!$scope.$$phase){
-              $scope.$digest();
-            }
-          }
-        });
+
+    var key = $route.current.params.editKey;
+
+    console.log(key);
+    $scope.saveProfile = function saveProfile(){
+      // key is removed every time after, so don't forget to transfer it
+      $scope.profile.key = key;
+      $scope.profile.$save();
+    };
+
+    $scope.addHat = function(form) {
+      $scope.profile[form + 's'].unshift($scope[form]);
+      $scope[form] = {};
+      saveProfile();
+    };
+
+    $scope.deleteHat = function(list, idx) {
+      $scope.profile[list].splice(idx, 1);
+      saveProfile();
+    };
+    $scope.switchHat = function(list, first_idx, second_idx) {
+      var first = $scope.profile[list][first_idx];
+      $scope.profile[list][first_idx] = $scope.profile[list][second_idx];
+      $scope.profile[list][second_idx] = first;
+      saveProfile();
+    };
+
+    $scope.profile = Profile.get({profile_name:$route.current.params.profileId},
+      function() { $scope.profile.key = key; });
   }).
-  controller ("ShowProfileCtrl", function($scope, $rootScope, Profile, $route) {
+  controller ("ShowProfileCtrl", function($scope, $rootScope, $route) {
     
     $.getJSON("/api/v1/profile/", {profile_name:$route.current.params.profileId},
         function(resp) {

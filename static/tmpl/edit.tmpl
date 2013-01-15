@@ -1,2 +1,108 @@
 
-<h1>{{profile.profile_name}}</h1>
+<div class="container">
+	<div class="row">
+		<h1>{{profile.profile_name}}</h1>
+
+		<h2>Description</h2>
+		<p editable editable-saved="saveProfile()" ng-model="profile.desc"></p>
+	</div>
+
+	<div class="row">
+		<h2>Current Hats</h2>
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>What</th>
+					<th>Preposition</th>
+					<th>Where</th>
+					<th>since</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<div ng-form>
+						<td>
+							<input type="text" required="required" placeholder="What kinda of position" ng-model="current_hat.what"><br>
+							<input type="text" placeholder="Link proving that" ng-model="current_hat.what_link">
+						</td>
+						<td>
+							<input type="text" placeholder="at" ng-model="current_hat.preposition">
+						</td>
+						<td>
+							<input type="text" required="required" placeholder="Who are you working with/for?" ng-model="current_hat.where"><br>
+							<input type="text" placeholder="Link it here" ng-model="current_hat.where_link">
+						</td>
+						<td>
+							<input type="text" required="required" placeholder="since when" ng-model="current_hat.since"><br>
+						</td>
+						<td>
+							<button ng-click="addHat('current_hat')" type="submit">Add</button>
+						</td>
+					</div>
+				</tr>
+				<tr ng-repeat="hat in profile.current_hats">
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.what"><br><span editable ng-model="hat.what_link"></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.preposition"></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.where"><br><span editable ng-model="hat.where_link"></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.since"></td>
+					<td>
+						<a ng-click="deleteHat('current_hats', $index)"><i class="icon-minus-sign"></i></a>
+						<a ng-hide="$first" ng-click="switchHat('current_hats', $index-1, $index)"><i class="icon-chevron-up"></i></a>
+						<a ng-hide="$last" ng-click="switchHat('current_hats', $index, $index+1)"><i class="icon-chevron-down"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<div class="row">
+		<h2>Former Hats</h2>
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>What</th>
+					<th>Preposition</th>
+					<th>Where</th>
+					<th>since</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<div ng-form>
+						<td>
+							<input type="text" required="required" placeholder="What kinda of position" ng-model="former_hat.what"><br>
+							<input type="text" placeholder="Link proving that" ng-model="former_hat.what_link">
+						</td>
+						<td>
+							<input type="text" placeholder="at" ng-model="former_hat.preposition">
+						</td>
+						<td>
+							<input type="text" required="required" placeholder="Who are you working with/for?" ng-model="former_hat.where"><br>
+							<input type="text" placeholder="Link it here" ng-model="former_hat.where_link">
+						</td>
+						<td>
+							<input type="text" required="required" placeholder="since when" ng-model="former_hat.since"><br>
+						</td>
+						<td>
+							<button ng-click="addHat('former_hat')" type="submit">Add</button>
+						</td>
+					</div>
+				</tr>
+				<tr ng-repeat="hat in profile.former_hats">
+					<td><span editable ng-model="hat.what"><br><span editable ng-model="hat.what_link"></td>
+					<td><span editable ng-model="hat.preposition"></td>
+					<td><span editable ng-model="hat.where"><br><span editable ng-model="hat.where_link"></td>
+					<td><span editable ng-model="hat.since"></td>
+					<td>
+						<a ng-click="deleteHat('former_hats', $index)"><i class="icon-minus-sign"></i></a>
+						<a ng-hide="$first" ng-click="switchHat('former_hats', $index-1, $index)"><i class="icon-chevron-up"></i></a>
+						<a ng-hide="$last" ng-click="switchHat('former_hats', $index, $index+1)"><i class="icon-chevron-down"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
