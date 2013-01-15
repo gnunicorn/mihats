@@ -49,6 +49,31 @@ angular.module('app.services', ['ngResource', 'ui']).
       }
     };
   }).
+  directive('supersized', function() {
+    return {
+      require: 'ngModel',
+      link: function(scope, element, attr, ctrl) {
+        console.log(arguments);
+          function resizeNow() {
+
+          }
+
+          scope.$watch(attr.ngModel, function(val) {
+            if(!val) {
+              $(element).hide();
+              return;
+            }
+            $("img", element).attr("src", val).load(resizeNow);
+            $(element).fadeIn("slow");
+          });
+
+          $(window).resize(function(){
+            resizeNow();
+          });
+
+        }
+      };
+  }).
   directive('twModal', function() {
     return {
       scope: true,
@@ -152,35 +177,38 @@ var crowdbetApp = angular.module('app', ["app.services"]).
         });
   }).
   controller ("ShowProfileCtrl", function($scope, $rootScope, Profile, $route) {
+    
     $.getJSON("/api/v1/profile/", {profile_name:$route.current.params.profileId},
         function(resp) {
           var profile = resp.result;
           if(profile){
             $scope.profile = profile;
-            $rootScope.profileID = profile.profile_name;
             if(!$scope.$$phase){
               $scope.$digest();
             }
-            $.supersized({
-              slides: $.map(profile.images, function(x, idx) {
-                return {'image': x};
-              })
-            });
+            $rootScope.profileID = profile.profile_name;
+            $rootScope.background_image = profile.images[0];
+            if(!$rootScope.$$phase){
+              $rootScope.$digest();
+            }
           }
         });
 
   }).
-  controller ("HomeCtrl", function($scope, appState) {
+  controller ("HomeCtrl", function($scope, $rootScope, appState) {
     $scope.app_name = appState.app_name;
   }).
-  controller ("MainCtrl", function ($scope, $location, appState, $route) {
+  controller ("MainCtrl", function ($scope, $location, appState, $rootScope, $route) {
     appState.app_name = $scope.app_name = "miHats";
 
     $scope.$on('$routeChangeSuccess', function() {
       //If this doesn't work, console.log $route.current to see how it's formatted
       if ($route.current.$route.controller == 'ShowProfileCtrl')
         $scope.showEdit = true;
-      else
+      else {
         $scope.showEdit = false;
+        $rootScope.background_image = null;
+      }
+        
     });
   });
