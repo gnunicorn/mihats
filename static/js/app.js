@@ -220,15 +220,17 @@ var crowdbetApp = angular.module('app', ["app.services"]).
       saveProfile();
     };
 
-    $scope.deleteHat = function(list, idx) {
+    $scope.deleteItem = function(list, idx) {
+      console.log(arguments);
       $scope.profile[list].splice(idx, 1);
-      saveProfile();
+      $scope.saveProfile();
     };
-    $scope.switchHat = function(list, first_idx, second_idx) {
+    $scope.switchItems = function(list, first_idx, second_idx) {
+      console.log(arguments);
       var first = $scope.profile[list][first_idx];
       $scope.profile[list][first_idx] = $scope.profile[list][second_idx];
       $scope.profile[list][second_idx] = first;
-      saveProfile();
+      $scope.saveProfile();
     };
 
     $scope.profile = Profile.get({profile_name:$route.current.params.profileId},

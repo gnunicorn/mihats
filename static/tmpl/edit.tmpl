@@ -1,23 +1,30 @@
 
 <div class="container">
 	<div class="row">
-		<h1>{{profile.profile_name}}</h1>
+		<h1>{{profile.profile_name}} <a href="#/{{profile.profile_name}}" class="btn">Back</a></h1>
 		<hr>
 		<!-- <strong</h2>
 		<p editable editable-saved="saveProfile()" ng-model="profile.desc"></p>-->
-		<p><strong>Theme</strong> <span editable editable-saved="saveProfile()" ng-model="profile.theme"></span></p>
-		<p><strong>Images</strong><div class="span">
+		<!-- <p><strong>Theme</strong> <span editable editable-saved="saveProfile()" ng-model="profile.theme"></span></p> -->
+		<div class="row">
+			<strong class="span">Images</strong>
+			<div class="span">
 				<div class="input-append" ng-form>
 				  <input type="url" class="span2" required="required" ng-model="newImage">
 				  <button class="btn btn-primary" ng-click="addImage()" type="button">Add</button>
 				</div>
 			</div>
-			<div class="row">
-				<div class="span2" ng-repeat="img in profile.images">
-					<img src="{{img}}" class="img-polaroid">
+		</div>
+		<div class="row">
+			<div class="span2" ng-repeat="img in profile.images" ng-mouseenter="showButtons=true" ng-mouseleave="showButtons=false">
+				<img src="{{img}}" class="img-polaroid" />
+				<div ng-show="showButtons">
+					<a ng-click="deleteItem('images', $index)"><i class="icon-minus-sign"></i></a>
+					<a ng-hide="$first" ng-click="switchItems('images', $index-1, $index)"><i class="icon-chevron-left"></i></a>
+					<a ng-hide="$last" ng-click="switchItems('images', $index, $index+1)"><i class="icon-chevron-right"></i></a>
 				</div>
 			</div>
-		</p>
+		</div>
 	</div>
 
 
@@ -62,9 +69,9 @@
 					<td><span editable editable-saved="saveProfile()" ng-model="hat.where"><br><span editable ng-model="hat.where_link"></td>
 					<td><span editable editable-saved="saveProfile()" ng-model="hat.since"></td>
 					<td>
-						<a ng-click="deleteHat('current_hats', $index)"><i class="icon-minus-sign"></i></a>
-						<a ng-hide="$first" ng-click="switchHat('current_hats', $index-1, $index)"><i class="icon-chevron-up"></i></a>
-						<a ng-hide="$last" ng-click="switchHat('current_hats', $index, $index+1)"><i class="icon-chevron-down"></i></a>
+						<a ng-click="deleteItem('current_hats', $index)"><i class="icon-minus-sign"></i></a>
+						<a ng-hide="$first" ng-click="switchItems('current_hats', $index-1, $index)"><i class="icon-chevron-up"></i></a>
+						<a ng-hide="$last" ng-click="switchItems('current_hats', $index, $index+1)"><i class="icon-chevron-down"></i></a>
 					</td>
 				</tr>
 			</tbody>
@@ -112,9 +119,9 @@
 					<td><span editable ng-model="hat.where"><br><span editable ng-model="hat.where_link"></td>
 					<td><span editable ng-model="hat.since"></td>
 					<td>
-						<a ng-click="deleteHat('former_hats', $index)"><i class="icon-minus-sign"></i></a>
-						<a ng-hide="$first" ng-click="switchHat('former_hats', $index-1, $index)"><i class="icon-chevron-up"></i></a>
-						<a ng-hide="$last" ng-click="switchHat('former_hats', $index, $index+1)"><i class="icon-chevron-down"></i></a>
+						<a ng-click="deleteItem('former_hats', $index)"><i class="icon-minus-sign"></i></a>
+						<a ng-hide="$first" ng-click="switchItems('former_hats', $index-1, $index)"><i class="icon-chevron-up"></i></a>
+						<a ng-hide="$last" ng-click="switchItems('former_hats', $index, $index+1)"><i class="icon-chevron-down"></i></a>
 					</td>
 				</tr>
 			</tbody>
