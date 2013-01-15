@@ -201,11 +201,17 @@ var crowdbetApp = angular.module('app', ["app.services"]).
 
     var key = $route.current.params.editKey;
 
-    console.log(key);
     $scope.saveProfile = function saveProfile(){
       // key is removed every time after, so don't forget to transfer it
       $scope.profile.key = key;
       $scope.profile.$save();
+    };
+
+    $scope.addImage = function() {
+      console.log($scope);
+      $scope.profile.images.unshift($scope.newImage);
+      $scope.newImage = null;
+      $scope.saveProfile();
     };
 
     $scope.addHat = function(form) {

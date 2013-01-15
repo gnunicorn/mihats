@@ -95,7 +95,7 @@ class EditProfile(ProfileBase, webapp2.RequestHandler):
         if not self._can_edit(model, params):
             raise webapp2.abort(403, "wrong key specified. Editing denied.")
         to_save = False
-        for x in ("theme", "current_hats", "former_hats"):
+        for x in ("theme", "images", "current_hats", "former_hats"):
             attr = params.get(x)
             if attr:
                 to_save = True

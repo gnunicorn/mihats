@@ -2,12 +2,27 @@
 <div class="container">
 	<div class="row">
 		<h1>{{profile.profile_name}}</h1>
-
-		<h2>Description</h2>
-		<p editable editable-saved="saveProfile()" ng-model="profile.desc"></p>
+		<hr>
+		<!-- <strong</h2>
+		<p editable editable-saved="saveProfile()" ng-model="profile.desc"></p>-->
+		<p><strong>Theme</strong> <span editable editable-saved="saveProfile()" ng-model="profile.theme"></span></p>
+		<p><strong>Images</strong><div class="span">
+				<div class="input-append" ng-form>
+				  <input type="url" class="span2" required="required" ng-model="newImage">
+				  <button class="btn btn-primary" ng-click="addImage()" type="button">Add</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span2" ng-repeat="img in profile.images">
+					<img src="{{img}}" class="img-polaroid">
+				</div>
+			</div>
+		</p>
 	</div>
 
+
 	<div class="row">
+		<hr>
 		<h2>Current Hats</h2>
 		<table class="table table-striped table-hover">
 			<thead>
@@ -56,8 +71,8 @@
 		</table>
 	</div>
 
-
 	<div class="row">
+		<hr>
 		<h2>Former Hats</h2>
 		<table class="table table-striped table-hover">
 			<thead>
