@@ -49,13 +49,36 @@ angular.module('app.services', ['ngResource', 'ui']).
       }
     };
   }).
-  directive('supersized', function() {
+  directive('autofit', function() {
     return {
       require: 'ngModel',
       link: function(scope, element, attr, ctrl) {
-        console.log(arguments);
-          function resizeNow() {
 
+          // set up
+          $("body").css({height: "100%"});
+          $(element).css({position: "fixed", left: 0, top: 0, overflow: "hidden",
+               "z-index": -999, height: "100%", width: "100%"});
+          var $img = $("<img src=''>").css({width: "auto", height: "auto",
+                position: "relative", outline: "none", border: "none"});
+          $(element).empty().append($img);
+
+          function resizeNow() {
+            var ratio = ($img.data('origHeight')/$img.data('origWidth')).toFixed(2),  // Define image ratio
+                browserwidth = $(window).width(),
+                browserheight = $(window).height();
+
+            console.log(browserheight);
+            console.log(browserwidth);
+
+          
+          /*-----Resize Image-----*/
+            if ((browserheight/browserwidth) > ratio){
+              $img.height(browserheight);
+              $img.width(browserheight / ratio);
+            } else {
+              $img.width(browserwidth);
+              $img.height(browserwidth * ratio);
+            }
           }
 
           scope.$watch(attr.ngModel, function(val) {
@@ -63,7 +86,12 @@ angular.module('app.services', ['ngResource', 'ui']).
               $(element).hide();
               return;
             }
-            $("img", element).attr("src", val).load(resizeNow);
+            $img.attr("src", val).load(function() {
+                var $img = $(this);
+                $img.data({'origWidth': $img.width(),
+                           'origHeight': $img.height()}).css('visibility','visible');
+                resizeNow();
+            });
             $(element).fadeIn("slow");
           });
 
