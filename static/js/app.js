@@ -67,9 +67,6 @@ angular.module('app.services', ['ngResource', 'ui']).
                 browserwidth = $(window).width(),
                 browserheight = $(window).height();
 
-            console.log(browserheight);
-            console.log(browserwidth);
-
           
           /*-----Resize Image-----*/
             if ((browserheight/browserwidth) > ratio){
