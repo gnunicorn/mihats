@@ -20,6 +20,21 @@
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
+        <div class="modal hide fade" tw-modal id="editModal" ng-controller="EditModalCtrl">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Unlock to Edit this Profile</h3>
+          </div>
+          <div class="modal-body">
+            <input type="text" placeholder="Edit Key" required="required" ng-model="key" ng-disabled="unlocked">
+          </div>
+          <div class="modal-footer">
+            <a href="#" class="btn close">Close</a>
+            <button type="submit" ng-hide="unlocked" ng-click="checkEditable()" ng-disabled="form.$invalid" class="btn btn-primary">Unlock</button>
+            <a ng-show="unlocked" ng-click="dismiss()" href="/#/{{profileID}}/{{key}}" class="btn btn-primary">Go to Edit</a>
+          </div>
+        </div>
+
         <div class="modal hide fade" tw-modal id="addModal" ng-controller="AddCtrl">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -49,7 +64,7 @@
         </div>
         <div class="container" ng-controller="MainCtrl">
             <div class="span pull-right">
-                <a href="#editModal" role="button" data-toggle="modal" class="btn btn-inverse"><span class="icon-edit icon-white"></span>&nbsp;Edit</a>
+                <a ng-show="showEdit" href="#editModal" role="button" data-toggle="modal" class="btn btn-inverse"><span class="icon-edit icon-white"></span>&nbsp;Edit</a>
                 <a href="#addModal" role="button" data-toggle="modal" class="btn btn-inverse"><span class="icon-plus icon-white"></span>&nbsp;Add</a>
             </div>
             <div class="row">

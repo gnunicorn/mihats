@@ -52,7 +52,7 @@ class CheckProfile(ProfileBase, webapp2.RequestHandler):
 class CheckEditRights(ProfileBase, webapp2.RequestHandler):
     @verified_api_request
     def get(self):
-        profile = self._get_model(self.request.GET)
+        profile = self._get_profile(self.request.GET)
         return self._can_edit(profile, self.request.GET)
 
 

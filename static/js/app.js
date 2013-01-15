@@ -122,6 +122,23 @@ var crowdbetApp = angular.module('app', ["app.services"]).
         });
     };
   }).
+  controller ("EditModalCtrl", function($scope, $rootScope, $route) {
+
+    $scope.unlocked = false;
+    $rootScope.$watch("profileID", function(val){
+      $scope.profileID = val;
+    });
+
+    $scope.checkEditable = function() {
+      $.get("/api/v1/profile/can_edit", {profile_name: $scope.profileID,
+            key:$scope.key}, function(resp) {
+              $scope.unlocked = resp.result;
+              if(!$scope.$$phase){
+                $scope.$digest();
+              }
+      });
+    };
+  }).
   controller ("EditProfileCtrl", function($scope, Profile, $route) {
     $.getJSON("/api/v1/profile/", {profile_name:$route.current.params.profileId},
         function(resp) {
@@ -134,12 +151,13 @@ var crowdbetApp = angular.module('app', ["app.services"]).
           }
         });
   }).
-  controller ("ShowProfileCtrl", function($scope, Profile, $route) {
+  controller ("ShowProfileCtrl", function($scope, $rootScope, Profile, $route) {
     $.getJSON("/api/v1/profile/", {profile_name:$route.current.params.profileId},
         function(resp) {
           var profile = resp.result;
           if(profile){
             $scope.profile = profile;
+            $rootScope.profileID = profile.profile_name;
             if(!$scope.$$phase){
               $scope.$digest();
             }
@@ -155,6 +173,14 @@ var crowdbetApp = angular.module('app', ["app.services"]).
   controller ("HomeCtrl", function($scope, appState) {
     $scope.app_name = appState.app_name;
   }).
-  controller ("MainCtrl", function ($scope, $location, appState) {
+  controller ("MainCtrl", function ($scope, $location, appState, $route) {
     appState.app_name = $scope.app_name = "miHats";
+
+    $scope.$on('$routeChangeSuccess', function() {
+      //If this doesn't work, console.log $route.current to see how it's formatted
+      if ($route.current.$route.controller == 'ShowProfileCtrl')
+        $scope.showEdit = true;
+      else
+        $scope.showEdit = false;
+    });
   });
