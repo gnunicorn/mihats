@@ -17,7 +17,7 @@
 		</div>
 		<div class="row">
 			<div class="span2" ng-repeat="img in profile.images" ng-mouseenter="showButtons=true" ng-mouseleave="showButtons=false">
-				<img ng-src="img" class="img-polaroid" />
+				<img ng-src="{{img}}" class="img-polaroid" />
 				<div ng-show="showButtons">
 					<a ng-click="deleteItem('images', $index)"><i class="icon-minus-sign"></i></a>
 					<a ng-hide="$first" ng-click="switchItems('images', $index-1, $index)"><i class="icon-chevron-left"></i></a>
