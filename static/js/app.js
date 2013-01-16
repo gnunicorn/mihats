@@ -217,7 +217,7 @@ var crowdbetApp = angular.module('app', ["app.services"]).
     $scope.addHat = function(form) {
       $scope.profile[form + 's'].unshift($scope[form]);
       $scope[form] = {};
-      saveProfile();
+      $scope.saveProfile();
     };
 
     $scope.deleteItem = function(list, idx) {
