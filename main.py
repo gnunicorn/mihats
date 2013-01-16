@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from google.appengine.ext.ndb import Key
+from google.appengine.api import mail
 from utils import verified_api_request, understand_post
 from uuid import uuid4
 
@@ -78,6 +79,23 @@ class CreateProfile(webapp2.RequestHandler):
             raise ValueError("Profile already exists.")
 
         profile = models.Profile(key=key, owner_email=email, edit_key=uuid4().hex)
+
+        mail.send_mail(sender="Benjamin Kampmann <ben.kampmann@gmail.com>",
+              to=email,
+              subject="Your miHats Admin Link",
+              body="""
+Hi there,
+
+thanks for signing up for the miHats Hat-Sharing Webservice.
+You can administer it at:
+
+ http://amasoeany.appspot.com/#/{0}/{1}
+
+DON'T share this link!
+
+Best
+Ben
+""".format(profile_name, profile.edit_key))
         profile.put()
         return {"profile_name": profile_name, "key": profile.edit_key}
 
