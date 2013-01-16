@@ -64,10 +64,10 @@
 					</div>
 				</tr>
 				<tr ng-repeat="hat in profile.current_hats">
-					<td><span editable editable-saved="saveProfile()" ng-model="hat.what"><br><span editable ng-model="hat.what_link"></td>
-					<td><span editable editable-saved="saveProfile()" ng-model="hat.preposition"></td>
-					<td><span editable editable-saved="saveProfile()" ng-model="hat.where"><br><span editable ng-model="hat.where_link"></td>
-					<td><span editable editable-saved="saveProfile()" ng-model="hat.since"></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.what"></span><br><span editable ng-model="hat.what_link"></span></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.preposition"></span></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.where"></span><br><span editable ng-model="hat.where_link"></span></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.since"></span></td>
 					<td>
 						<a ng-click="deleteItem('current_hats', $index)"><i class="icon-minus-sign"></i></a>
 						<a ng-hide="$first" ng-click="switchItems('current_hats', $index-1, $index)"><i class="icon-chevron-up"></i></a>
@@ -114,10 +114,10 @@
 					</div>
 				</tr>
 				<tr ng-repeat="hat in profile.former_hats">
-					<td><span editable ng-model="hat.what"><br><span editable ng-model="hat.what_link"></td>
-					<td><span editable ng-model="hat.preposition"></td>
-					<td><span editable ng-model="hat.where"><br><span editable ng-model="hat.where_link"></td>
-					<td><span editable ng-model="hat.since"></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.what"></span><br><span editable ng-model="hat.what_link"></span></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.preposition"></span></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.where"></span><br><span editable ng-model="hat.where_link"></span></td>
+					<td><span editable editable-saved="saveProfile()" ng-model="hat.since"></span></td>
 					<td>
 						<a ng-click="deleteItem('former_hats', $index)"><i class="icon-minus-sign"></i></a>
 						<a ng-hide="$first" ng-click="switchItems('former_hats', $index-1, $index)"><i class="icon-chevron-up"></i></a>
