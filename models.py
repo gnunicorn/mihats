@@ -6,14 +6,14 @@ class Hat(ndb.Model):
     what = ndb.StringProperty('wa')
     what_link = ndb.StringProperty('wal', required=False)
     where = ndb.StringProperty('we')
-    preposition = ndb.StringProperty("p")
+    preposition = ndb.StringProperty('p')
     where_link = ndb.StringProperty('wel', required=False)
     since = ndb.StringProperty('s', required=False)
     until = ndb.StringProperty('u', required=False)
 
     def as_json(self):
         return dict([(x, getattr(self, x)) \
-            for x in ('what', 'what_link', 'where', 'where_link', 'since', 'until')])
+            for x in ('what', 'what_link', 'where', 'where_link', 'since', 'preposition', 'until')])
 
 
 class Profile(ndb.Model):
