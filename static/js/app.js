@@ -243,11 +243,13 @@ var crowdbetApp = angular.module('app', ["app.services"]).
           var profile = resp.result;
           if(profile){
             $scope.profile = profile;
+
+            $rootScope.profileID = profile.profile_name;
+            $rootScope.background_image = profile.images[0];
+
             if(!$scope.$$phase){
               $scope.$digest();
             }
-            $rootScope.profileID = profile.profile_name;
-            $rootScope.background_image = profile.images[0];
             if(!$rootScope.$$phase){
               $rootScope.$digest();
             }
