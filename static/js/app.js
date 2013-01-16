@@ -162,12 +162,10 @@ var crowdbetApp = angular.module('app', ["app.services"]).
       $.post("/api/v1/profile/create", {profile_name:$scope.profileName, email:$scope.email},
         function(resp) {
           var profile = resp.result;
-          if(profile){
-            $location.path("/" + profile.profile_name + "/" + profile.key);
-            if(!$scope.$$phase){
-              $scope.$digest();
-            }
-          }
+          if(profile)
+            $scope.$apply(function () {
+              $location.path("/" + profile.profile_name + "/" + profile.key);
+            });
           $scope.dismiss();
         });
     };
