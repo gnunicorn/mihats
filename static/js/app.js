@@ -206,7 +206,6 @@ var crowdbetApp = angular.module('app', ["app.services"]).
     };
 
     $scope.addImage = function() {
-      console.log($scope);
       $scope.profile.images.unshift($scope.newImage);
       $scope.newImage = null;
       $scope.saveProfile();
@@ -219,12 +218,10 @@ var crowdbetApp = angular.module('app', ["app.services"]).
     };
 
     $scope.deleteItem = function(list, idx) {
-      console.log(arguments);
       $scope.profile[list].splice(idx, 1);
       $scope.saveProfile();
     };
     $scope.switchItems = function(list, first_idx, second_idx) {
-      console.log(arguments);
       var first = $scope.profile[list][first_idx];
       $scope.profile[list][first_idx] = $scope.profile[list][second_idx];
       $scope.profile[list][second_idx] = first;
