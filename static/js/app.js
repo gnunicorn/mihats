@@ -144,8 +144,19 @@ angular.module('app.services', ['ngResource', 'ui']).
       }
     };
   }).
-  service('appState', function(){
+  service ('appState', function() {
 
+  }).
+  service('randomPicture', function(){
+    var pictures = ["admirals.jpg", "catdog.jpg", "flickr-hats.jpg",
+      "lucas.jpg", "nice_hat.jpg", "panama.jpg", "notafish.jpg",
+      "notafish2.jpg"];
+
+    return {
+      getRandom: function() {
+        return "/img/content/" +  pictures[Math.floor(Math.random()*pictures.length)];
+      }
+    };
   });
 
 var crowdbetApp = angular.module('app', ["app.services"]).
@@ -252,8 +263,9 @@ var crowdbetApp = angular.module('app', ["app.services"]).
         });
 
   }).
-  controller ("HomeCtrl", function($scope, $rootScope, appState) {
+  controller ("HomeCtrl", function($scope, $rootScope, appState, randomPicture) {
     $scope.app_name = appState.app_name;
+    $rootScope.background_image = randomPicture.getRandom();
   }).
   controller ("MainCtrl", function ($scope, $location, appState, $rootScope, $route) {
     appState.app_name = $scope.app_name = "miHats";
