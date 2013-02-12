@@ -1,5 +1,6 @@
 
 <div class="container">
+<div class="hero-unit">
 	<div class="row">
 		<h1>{{profile.profile_name}} <a href="#/{{profile.profile_name}}" class="btn">Back</a></h1>
 		<hr>
@@ -49,14 +50,14 @@
 							<input type="text" placeholder="Link proving that" ng-model="current_hat.what_link">
 						</td>
 						<td>
-							<input type="text" placeholder="at" ng-model="current_hat.preposition">
+							<input type="text" placeholder="at" ng-model="current_hat.preposition" class="span2">
 						</td>
 						<td>
 							<input type="text" required="required" placeholder="Who are you working with/for?" ng-model="current_hat.where"><br>
 							<input type="text" placeholder="Link it here" ng-model="current_hat.where_link">
 						</td>
 						<td>
-							<input type="text" required="required" placeholder="since when" ng-model="current_hat.since"><br>
+							<input type="text" required="required" placeholder="since when" ng-model="current_hat.since" class="span2"><br>
 						</td>
 						<td>
 							<button ng-click="addHat('current_hat')" type="submit">Add</button>
@@ -99,14 +100,14 @@
 							<input type="text" placeholder="Link proving that" ng-model="former_hat.what_link">
 						</td>
 						<td>
-							<input type="text" placeholder="at" ng-model="former_hat.preposition">
+							<input type="text" placeholder="at" ng-model="former_hat.preposition" class="span2">
 						</td>
 						<td>
 							<input type="text" required="required" placeholder="Who are you working with/for?" ng-model="former_hat.where"><br>
 							<input type="text" placeholder="Link it here" ng-model="former_hat.where_link">
 						</td>
 						<td>
-							<input type="text" required="required" placeholder="since when" ng-model="former_hat.since"><br>
+							<input type="text" required="required" placeholder="since when" ng-model="former_hat.since" class="span2"><br>
 						</td>
 						<td>
 							<button ng-click="addHat('former_hat')" type="submit">Add</button>
@@ -127,4 +128,5 @@
 			</tbody>
 		</table>
 	</div>
+</div>
 </div>
