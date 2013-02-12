@@ -55,12 +55,13 @@ angular.module('app.services', ['ngResource', 'ui']).
                 display: "none",
                 position: "relative", outline: "none", border: "none"});
     }
+
     return {
       require: 'ngModel',
       link: function(scope, element, attr, ctrl) {
-
           // set up
-          var $formerImg, $img;
+          var $formerImg, $img, timer = false;
+
           $("body").css({height: "100%"});
           $(element).css({position: "fixed", left: 0, top: 0,
                 overflow: "hidden", display: "block",
@@ -85,7 +86,7 @@ angular.module('app.services', ['ngResource', 'ui']).
             }
           }
 
-          scope.$watch(attr.ngModel, function(val) {
+          function load_image(val) {
             $img = make_image();
             $img.attr("src", val).load(function() {
                 var $img = $(this);
@@ -103,6 +104,31 @@ angular.module('app.services', ['ngResource', 'ui']).
                 resizeNow();
             });
             $(element).prepend($img);
+          }
+
+          scope.$watch(attr.ngModel, function(val) {
+            if (timer !== false) {
+              clearInterval(timer);
+              timer = false;
+            }
+            if (angular.isArray(val)) {
+              if (val.length > 1){
+                var idx = 1;
+                console.log(attr.timeout);
+                timer = setInterval(function() {
+                  load_image(val[idx]);
+                  idx += 1;
+                  if (idx >= val.length) {
+                    idx = 0;
+                  }
+                }, Number(attr.timeout || 5000));
+                load_image(val[0]);
+              } else {
+                load_image(val[0]);
+              }
+            } else {
+              load_image(val);
+            }
           });
 
           $(window).resize(function(){
@@ -166,6 +192,19 @@ angular.module('app.services', ['ngResource', 'ui']).
       "notafish2.jpg"];
 
     return {
+      shuffledPictures: function() {
+        var res = $.map(pictures, function(item, idx) {
+          return "/img/content/" + item;
+        });
+
+      for (var i = res.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = res[i];
+          res[i] = res[j];
+          res[j] = tmp;
+        }
+      return res;
+      },
       getRandom: function() {
         return "/img/content/" +  pictures[Math.floor(Math.random()*pictures.length)];
       }
@@ -256,7 +295,7 @@ var crowdbetApp = angular.module('app', ["app.services"]).
     $scope.profile = Profile.get({profile_name:$route.current.params.profileId},
       function() { $scope.profile.key = key; });
   }).
-  controller ("ShowProfileCtrl", function($scope, $rootScope, $route) {
+  controller ("ShowProfileCtrl", function($scope, $rootScope, $route, randomPicture) {
     
     $.getJSON("/api/v1/profile/", {profile_name:$route.current.params.profileId},
         function(resp) {
@@ -265,7 +304,10 @@ var crowdbetApp = angular.module('app', ["app.services"]).
             $scope.profile = profile;
 
             $rootScope.profileID = profile.profile_name;
-            $rootScope.background_image = profile.images[0];
+            if(profile.images.length)
+              $rootScope.background_image = profile.images;
+            else
+              $rootScope.background_image = randomPicture.getRandom();
 
             if(!$scope.$$phase){
               $scope.$digest();
@@ -282,7 +324,7 @@ var crowdbetApp = angular.module('app', ["app.services"]).
   }).
   controller ("HomeCtrl", function($scope, $rootScope, appState, randomPicture) {
     $scope.app_name = appState.app_name;
-    $rootScope.background_image = randomPicture.getRandom();
+    $rootScope.background_image = randomPicture.shuffledPictures();
   }).
   controller ("MainCtrl", function ($scope, $location, appState, $rootScope, $route) {
     appState.app_name = $scope.app_name = "miHats";

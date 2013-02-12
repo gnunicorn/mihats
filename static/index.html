@@ -19,7 +19,7 @@
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
-        <div ng-model="background_image" autofit>
+        <div ng-model="background_image" timeout="{{fade_timeout}}" autofit>
         </div>
         <div class="modal hide fade" tw-modal id="editModal" ng-controller="EditModalCtrl">
           <div class="modal-header">
