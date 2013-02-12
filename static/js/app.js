@@ -163,6 +163,7 @@ var crowdbetApp = angular.module('app', ["app.services"]).
   config(function($routeProvider) {
      $routeProvider.
        when('/', {controller:"HomeCtrl", templateUrl:'tmpl/home.tmpl'}).
+       when('/changelog', {controller:"ChangesCtrl", templateUrl:'tmpl/changelog.tmpl'}).
        when('/:profileId', {controller:"ShowProfileCtrl", templateUrl:'tmpl/profile.tmpl'}).
        when('/:profileId/:editKey', {controller:"EditProfileCtrl", templateUrl:'tmpl/edit.tmpl'}).
       otherwise({redirectTo:'/'});
@@ -262,6 +263,9 @@ var crowdbetApp = angular.module('app', ["app.services"]).
           }
         });
 
+  }).
+  controller ("ChangesCtrl", function($scope, $rootScope, appState, randomPicture) {
+      $rootScope.background_image = randomPicture.getRandom();
   }).
   controller ("HomeCtrl", function($scope, $rootScope, appState, randomPicture) {
     $scope.app_name = appState.app_name;
