@@ -50,20 +50,27 @@ angular.module('app.services', ['ngResource', 'ui']).
     };
   }).
   directive('autofit', function() {
+    function make_image() {
+      return $("<img src=''>").css({width: "auto", height: "auto",
+                display: "none",
+                position: "relative", outline: "none", border: "none"});
+    }
     return {
       require: 'ngModel',
       link: function(scope, element, attr, ctrl) {
 
           // set up
+          var $formerImg, $img;
           $("body").css({height: "100%"});
-          $(element).css({position: "fixed", left: 0, top: 0, overflow: "hidden",
+          $(element).css({position: "fixed", left: 0, top: 0,
+                overflow: "hidden", display: "block",
+                "background-color": "#333333",
                "z-index": -999, height: "100%", width: "100%"});
-          var $img = $("<img src=''>").css({width: "auto", height: "auto",
-                position: "relative", outline: "none", border: "none"});
-          $(element).empty().append($img);
+          $(element).empty();
 
           function resizeNow() {
-            var ratio = ($img.data('origHeight')/$img.data('origWidth')).toFixed(2),  // Define image ratio
+            if (!$img) return;
+            var ratio = ($img.data('origHeight') / $img.data('origWidth')).toFixed(2),  // Define image ratio
                 browserwidth = $(window).width(),
                 browserheight = $(window).height();
 
@@ -79,17 +86,23 @@ angular.module('app.services', ['ngResource', 'ui']).
           }
 
           scope.$watch(attr.ngModel, function(val) {
-            if(!val) {
-              $(element).hide();
-              return;
-            }
+            $img = make_image();
             $img.attr("src", val).load(function() {
                 var $img = $(this);
                 $img.data({'origWidth': $img.width(),
-                           'origHeight': $img.height()}).css('visibility','visible');
+                           'origHeight': $img.height()});
+                if($formerImg) {
+                  var old = $formerImg;
+                  old.fadeOut("fast", function() {
+                    old.remove();
+                  });
+                }
+                $img.fadeIn("slow", function() {
+                  $formerImg = $img;
+                });
                 resizeNow();
             });
-            $(element).fadeIn("slow");
+            $(element).prepend($img);
           });
 
           $(window).resize(function(){
