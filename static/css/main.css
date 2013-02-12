@@ -1,4 +1,8 @@
 
+.hero-unit {
+	margin-top: 50px;
+	background: rgba(210, 210, 210, 0.8);
+}
 .theme {
 	margin: 10% auto;
 	background: url("/img/bg-black.png") repeat;
