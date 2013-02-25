@@ -9,11 +9,14 @@
 			<div class="span8">
 				<div class="row">
 					<strong class="span">Images</strong>
-					<div class="span">
+					<div class="span" ng-show="userCan.add_image">
 						<div class="input-append" ng-form>
 						  <input type="url" class="span2" required="required" ng-model="newImage">
 						  <button class="btn btn-primary" ng-click="addItem('newImage', 'images')" type="button">Add</button>
 						</div>
+					</div>
+					<div class="span" ng-hide="userCan.add_image">
+						<p>You exceeded the Limit of 3 Images. Please <a href="">upgrade</a> to add more</p>
 					</div>
 				</div>
 				<div class="row">
@@ -29,14 +32,19 @@
 			</div>
 			<div class="span3" style="border-left: 1px solid #999; padding-left:">
 				<div style="padding-left: 10px">
-					<h4>Extended Settings</h4>
+					<h4>Extended Settings<span ng-hide="userCan.customize_access">Only availabe to pro-users</span></h4>
 					<div style="border-top: 1px solid #999; margin-top: 5px; padding-top: 10px">
-						<label>Theme</label><span editable="{type: 'select', emptytext: 'Pretty Dark (default)', source:[{'value':'dark', 'text': 'Pretty Dark (default)'}, {'value':'light', 'text': 
+						<label>Theme</label><span ng-show="userCan.edit_theme" editable="{type: 'select', emptytext: 'Pretty Dark (default)', source:[{'value':'dark', 'text': 'Pretty Dark (default)'}, {'value':'light', 'text': 
 						'Light'}]}" editable-saved="saveProfile()" ng-model="profile.theme"></span>
+						<span ng-hide="userCan.edit_theme">{{profile.theme}}</span>
+						<a ng-hide="userCan.edit_theme">Upgrade to edit</a>
 					</div>
 					<div  style="border-top: 1px solid #999; margin-top: 5px; padding-top: 10px">
 						<label>Allow external Access</label>
-						<div>
+						<div ng-hide="userCan.customize_access">
+							<a>Upgrade to customize the domains, which can access your listing</a>
+						</div>
+						<div ng-show="userCan.customize_access">
 							<ul>
 								<li ng-repeat="domain in profile.allowed_domains" ng-mouseenter="showButtons=true" ng-mouseleave="showButtons=false">
 									<a ng-show="showButtons" ng-click="deleteItem('allowed_domains', $index)"><i class="icon-minus-sign"></i></a>
@@ -44,7 +52,7 @@
 								</li>
 							</ul>
 						</div>
-						<div class="input-append" ng-form>
+						<div ng-show="userCan.customize_access" class="input-append" ng-form>
 						  <input type="url" class="span2" required="required" ng-model="newDomain">
 						  <button class="btn btn-primary" ng-click="addItem('newDomain', 'allowed_domains')" type="button">Add</button>
 						</div>
@@ -70,7 +78,12 @@
 			</thead>
 			<tbody>
 				<tr>
-					<div ng-form>
+					<div class="span" ng-hide="userCan.add_hat">
+						<td colspan="5">
+							<p>You exceeded the limit of 10 hats. Please <a href="">upgrade</a> to add more.</p>
+						</td>
+					</div>
+					<div ng-form ng-show="userCan.add_hat">
 						<td>
 							<input type="text" required="required" placeholder="What kinda of position" ng-model="current_hat.what"><br>
 							<input type="text" placeholder="Link proving that" ng-model="current_hat.what_link">
@@ -120,7 +133,12 @@
 			</thead>
 			<tbody>
 				<tr>
-					<div ng-form>
+					<div class="span" ng-hide="userCan.add_hat">
+						<td colspan="5">
+							<p>You exceeded the limit of 10 hats. Please <a href="">upgrade</a> to add more.</p>
+						</td>
+					</div>
+					<div ng-form ng-show="userCan.add_hat">
 						<td>
 							<input type="text" required="required" placeholder="What kinda of position" ng-model="former_hat.what"><br>
 							<input type="text" placeholder="Link proving that" ng-model="former_hat.what_link">

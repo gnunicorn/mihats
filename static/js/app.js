@@ -265,12 +265,24 @@ var crowdbetApp = angular.module('app', ["app.services"]).
   }).
   controller ("EditProfileCtrl", function($scope, Profile, $route) {
 
-    var key = $route.current.params.editKey;
+    var key = $route.current.params.editKey,
+        ju = jerry.init("", "/api/v1/").signin($route.current.params.profileId);
+    $scope.userCan = {};
+    function updateCan() {
+        $scope.userCan = ju.getCans(["customize_access", "edit_theme"]);
+        if ($scope.profile.images) {
+          $scope.userCan.add_image = ju.can("add_image", $scope.profile.images.length);
+          $scope.userCan.add_hat = ju.can("add_hat", $scope.profile.current_hats.length + $scope.profile.former_hats.length);
+        }
+        console.log($scope.userCan);
+    }
+    ju.promise.then(function() {$scope.$apply(updateCan);});
 
     $scope.saveProfile = function saveProfile(){
       // key is removed every time after, so don't forget to transfer it
       $scope.profile.key = key;
       $scope.profile.$save();
+      updateCan();
     };
 
     $scope.addItem = function(item, list) {
@@ -298,7 +310,10 @@ var crowdbetApp = angular.module('app', ["app.services"]).
     };
 
     $scope.profile = Profile.get({profile_name:$route.current.params.profileId},
-      function() {$scope.profile.key = key;});
+      function() {
+        $scope.profile.key = key;
+        updateCan();
+      });
   }).
   controller ("ShowProfileCtrl", function($scope, $rootScope, $route, randomPicture) {
     

@@ -2,8 +2,11 @@
 
 from google.appengine.ext.ndb import Key
 from google.appengine.api import mail
+from jerry.app_engine import jerry_login_proxy
 from utils import verified_api_request, understand_post
 from uuid import uuid4
+
+import config
 
 import webapp2
 import models
@@ -102,8 +105,9 @@ class EditProfile(ProfileBase, webapp2.RequestHandler):
     def get(self):
         self.response.headers["Access-Control-Allow-Origin"] = "http://localhost/"
         profile = self._get_profile(self.request.GET)
-        for domain in profile.allowed_domains:
-            self.response.headers.add("Access-Control-Allow-Origin", domain.encode("utf-8"))
+        if profile.jerry_user.can("customize_access"):
+            for domain in profile.allowed_domains:
+                self.response.headers.add("Access-Control-Allow-Origin", domain.encode("utf-8"))
         return self._render_model(profile)
 
     @verified_api_request
@@ -113,11 +117,19 @@ class EditProfile(ProfileBase, webapp2.RequestHandler):
         if not self._can_edit(model, params):
             raise webapp2.abort(403, "wrong key specified. Editing denied.")
         to_save = False
-        for x in ("theme", "images", "about", "allowed_domains", "current_hats", "former_hats"):
-            attr = params.get(x)
-            if attr:
+        can_edit = ["images", "about", "current_hats", "former_hats"]
+        jerry_user = model.jerry_user
+
+        if jerry_user.can("customize_access"):
+            can_edit.append("allowed_domains")
+
+        if jerry_user.can("edit_theme"):
+            can_edit.append("theme")
+
+        for x in can_edit:
+            if x in params:
                 to_save = True
-                setattr(model, x, attr)
+                setattr(model, x, params.get(x))
 
         if to_save:
             model.put()
@@ -140,5 +152,6 @@ app = webapp2.WSGIApplication([
     ('/api/v1/profile/create', CreateProfile),
     ('/api/v1/profile/', EditProfile),
     ('/api/v1/profile', EditProfile),
+    jerry_login_proxy(**config.jerry),
     ('./*', MainHello)
 ], debug=True)
