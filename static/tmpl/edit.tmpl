@@ -6,21 +6,49 @@
 		<p editable="{type: 'textarea'}" editable-saved="saveProfile()" ng-model="profile.about"></p>
 		<hr>
 		<div class="row">
-			<strong class="span">Images</strong>
-			<div class="span">
-				<div class="input-append" ng-form>
-				  <input type="url" class="span2" required="required" ng-model="newImage">
-				  <button class="btn btn-primary" ng-click="addImage()" type="button">Add</button>
+			<div class="span8">
+				<div class="row">
+					<strong class="span">Images</strong>
+					<div class="span">
+						<div class="input-append" ng-form>
+						  <input type="url" class="span2" required="required" ng-model="newImage">
+						  <button class="btn btn-primary" ng-click="addItem('newImage', 'images')" type="button">Add</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span2" ng-repeat="img in profile.images" ng-mouseenter="showButtons=true" ng-mouseleave="showButtons=false">
+						<img ng-src="{{img}}" class="img-polaroid" />
+						<div ng-show="showButtons">
+							<a ng-click="deleteItem('images', $index)"><i class="icon-minus-sign"></i></a>
+							<a ng-hide="$first" ng-click="switchItems('images', $index-1, $index)"><i class="icon-chevron-left"></i></a>
+							<a ng-hide="$last" ng-click="switchItems('images', $index, $index+1)"><i class="icon-chevron-right"></i></a>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="span2" ng-repeat="img in profile.images" ng-mouseenter="showButtons=true" ng-mouseleave="showButtons=false">
-				<img ng-src="{{img}}" class="img-polaroid" />
-				<div ng-show="showButtons">
-					<a ng-click="deleteItem('images', $index)"><i class="icon-minus-sign"></i></a>
-					<a ng-hide="$first" ng-click="switchItems('images', $index-1, $index)"><i class="icon-chevron-left"></i></a>
-					<a ng-hide="$last" ng-click="switchItems('images', $index, $index+1)"><i class="icon-chevron-right"></i></a>
+			<div class="span3" style="border-left: 1px solid #999; padding-left:">
+				<div style="padding-left: 10px">
+					<h4>Extended Settings</h4>
+					<div style="border-top: 1px solid #999; margin-top: 5px; padding-top:5px">
+						<label>Theme</label><span editable="{type: 'select', emptytext: 'Pretty Dark (default)', source:[{'value':'dark', 'text': 'Pretty Dark (default)'}, {'value':'light', 'text': 
+						'Light'}]}" editable-saved="saveProfile()" ng-model="profile.theme"></span>
+					</div>
+					<div  style="border-top: 1px solid #999; margin-top: 5px; padding-top:5px">
+						<label>Allow external Access</label>
+						<div>
+							<ul>
+								<li ng-repeat="domain in profile.allowed_domains" ng-mouseenter="showButtons=true" ng-mouseleave="showButtons=false">
+									<a ng-show="showButtons" ng-click="deleteItem('allowed_domains', $index)"><i class="icon-minus-sign"></i></a>
+									<span>{{domain}}</span>
+								</li>
+							</ul>
+						</div>
+						<div class="input-append" ng-form>
+						  <input type="url" class="span2" required="required" ng-model="newDomain">
+						  <button class="btn btn-primary" ng-click="addItem('newDomain', 'allowed_domains')" type="button">Add</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -167,10 +167,11 @@ angular.module('app.services', ['ngResource', 'ui']).
     return {
       require: 'ngModel',
       link: function(scope, elm, attrs, model) {
-        elm.editable($.extend(scope.$eval(attrs.editable), {
+        elm.editable($.extend({
           emptytext: "(empty)",
-          unsavedclass: "editable-unsaved-changed"
-        }));
+          "emptyclass": "",
+          "unsavedclass": ""
+        }, scope.$eval(attrs.editable)));
         model.$render = function() {
             elm.editable('setValue', model.$viewValue);
         };
@@ -272,9 +273,10 @@ var crowdbetApp = angular.module('app', ["app.services"]).
       $scope.profile.$save();
     };
 
-    $scope.addImage = function() {
-      $scope.profile.images.unshift($scope.newImage);
-      $scope.newImage = null;
+    $scope.addItem = function(item, list) {
+      if (!$scope[item]) return;
+      $scope.profile[list].unshift($scope[item]);
+      $scope[item] = null;
       $scope.saveProfile();
     };
 
@@ -296,7 +298,7 @@ var crowdbetApp = angular.module('app', ["app.services"]).
     };
 
     $scope.profile = Profile.get({profile_name:$route.current.params.profileId},
-      function() { $scope.profile.key = key; });
+      function() {$scope.profile.key = key;});
   }).
   controller ("ShowProfileCtrl", function($scope, $rootScope, $route, randomPicture) {
     
