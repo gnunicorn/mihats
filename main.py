@@ -100,7 +100,11 @@ class EditProfile(ProfileBase, webapp2.RequestHandler):
 
     @verified_api_request
     def get(self):
-        return self._render_model(self._get_profile(self.request.GET))
+        self.response.headers["Access-Control-Allow-Origin"] = "http://localhost/"
+        profile = self._get_profile(self.request.GET)
+        for domain in profile.allowed_domains:
+            self.response.headers.add("Access-Control-Allow-Origin", domain.encode("utf-8"))
+        return self._render_model(profile)
 
     @verified_api_request
     @understand_post
