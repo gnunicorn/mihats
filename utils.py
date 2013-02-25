@@ -2,12 +2,17 @@
 from google.appengine.ext.ndb import Key
 from google.appengine.api import users
 
+from jerry.app_engine import Provider
+import config
+
 import hmac
 import hashlib
 import binascii
 import webapp2
 import json
 import urllib
+import os
+
 
 
 def _get_user():
@@ -60,6 +65,11 @@ def as_json(fun):
                 "message": "{}".format(exc.message)
             }))
     return wrapped
+
+_jerry = Provider(**config.jerry)
+
+def get_jerry_profile(key):
+    return _jerry.signin(user_id=key)
 
 
 def verified_api_request(func):

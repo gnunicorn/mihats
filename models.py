@@ -29,6 +29,11 @@ class Profile(ndb.Model):
     former_hats = ndb.StructuredProperty(Hat, repeated=True)
     allowed_domains = ndb.StringProperty("d", repeated=True)
 
+    @property
+    def jerry_user(self):
+        from utils import get_jerry_profile
+        return get_jerry_profile(self.key.string_id())
+
     def as_json(self):
         return {"profile_name": self.key.string_id(),
                 "id": self.key.string_id(),
