@@ -66,6 +66,9 @@
 	<div class="row">
 		<hr>
 		<h2>Current Hats</h2>
+		<div ng-hide="userCan.add_hat" class="alert alert-warning">
+			<p><strong>Limit Exceeded</strong> You exceeded the limit of 10 hats. Please <a href="">upgrade</a> to add more.</p>
+		</div>
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
@@ -77,31 +80,24 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<div class="span" ng-hide="userCan.add_hat">
-						<td colspan="5">
-							<p>You exceeded the limit of 10 hats. Please <a href="">upgrade</a> to add more.</p>
-						</td>
-					</div>
-					<div ng-form ng-show="userCan.add_hat">
-						<td>
-							<input type="text" required="required" placeholder="What kinda of position" ng-model="current_hat.what"><br>
-							<input type="text" placeholder="Link proving that" ng-model="current_hat.what_link">
-						</td>
-						<td>
-							<input type="text" placeholder="at" ng-model="current_hat.preposition" class="span2">
-						</td>
-						<td>
-							<input type="text" required="required" placeholder="Who are you working with/for?" ng-model="current_hat.where"><br>
-							<input type="text" placeholder="Link it here" ng-model="current_hat.where_link">
-						</td>
-						<td>
-							<input type="text" required="required" placeholder="since when" ng-model="current_hat.since" class="span2"><br>
-						</td>
-						<td>
-							<button ng-click="addHat('current_hat')" type="submit">Add</button>
-						</td>
-					</div>
+				<tr ng-form ng-show="userCan.add_hat">
+					<td>
+						<input type="text" required="required" placeholder="What kinda of position" ng-model="current_hat.what"><br>
+						<input type="text" placeholder="Link proving that" ng-model="current_hat.what_link">
+					</td>
+					<td>
+						<input type="text" placeholder="at" ng-model="current_hat.preposition" class="span2">
+					</td>
+					<td>
+						<input type="text" required="required" placeholder="Who are you working with/for?" ng-model="current_hat.where"><br>
+						<input type="text" placeholder="Link it here" ng-model="current_hat.where_link">
+					</td>
+					<td>
+						<input type="text" required="required" placeholder="since when" ng-model="current_hat.since" class="span2"><br>
+					</td>
+					<td>
+						<button ng-click="addHat('current_hat')" type="submit">Add</button>
+					</td>
 				</tr>
 				<tr ng-repeat="hat in profile.current_hats">
 					<td><span editable editable-saved="saveProfile()" ng-model="hat.what"></span><br><span editable ng-model="hat.what_link"></span></td>
@@ -121,6 +117,10 @@
 	<div class="row">
 		<hr>
 		<h2>Former Hats</h2>
+
+		<div ng-hide="userCan.add_hat" class="alert alert-warning">
+			<p><strong>Limit Exceeded</strong> You exceeded the limit of 10 hats. Please <a href="">upgrade</a> to add more.</p>
+		</div>
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
@@ -132,31 +132,24 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<div class="span" ng-hide="userCan.add_hat">
-						<td colspan="5">
-							<p>You exceeded the limit of 10 hats. Please <a href="">upgrade</a> to add more.</p>
-						</td>
-					</div>
-					<div ng-form ng-show="userCan.add_hat">
-						<td>
-							<input type="text" required="required" placeholder="What kinda of position" ng-model="former_hat.what"><br>
-							<input type="text" placeholder="Link proving that" ng-model="former_hat.what_link">
-						</td>
-						<td>
-							<input type="text" placeholder="at" ng-model="former_hat.preposition" class="span2">
-						</td>
-						<td>
-							<input type="text" required="required" placeholder="Who are you working with/for?" ng-model="former_hat.where"><br>
-							<input type="text" placeholder="Link it here" ng-model="former_hat.where_link">
-						</td>
-						<td>
-							<input type="text" required="required" placeholder="since when" ng-model="former_hat.since" class="span2"><br>
-						</td>
-						<td>
-							<button ng-click="addHat('former_hat')" type="submit">Add</button>
-						</td>
-					</div>
+				<tr ng-form ng-show="userCan.add_hat">
+					<td>
+						<input type="text" required="required" placeholder="What kinda of position" ng-model="former_hat.what"><br>
+						<input type="text" placeholder="Link proving that" ng-model="former_hat.what_link">
+					</td>
+					<td>
+						<input type="text" placeholder="at" ng-model="former_hat.preposition" class="span2">
+					</td>
+					<td>
+						<input type="text" required="required" placeholder="Who are you working with/for?" ng-model="former_hat.where"><br>
+						<input type="text" placeholder="Link it here" ng-model="former_hat.where_link">
+					</td>
+					<td>
+						<input type="text" required="required" placeholder="since when" ng-model="former_hat.since" class="span2"><br>
+					</td>
+					<td>
+						<button ng-click="addHat('former_hat')" type="submit">Add</button>
+					</td>
 				</tr>
 				<tr ng-repeat="hat in profile.former_hats">
 					<td><span editable editable-saved="saveProfile()" ng-model="hat.what"></span><br><span editable ng-model="hat.what_link"></span></td>
