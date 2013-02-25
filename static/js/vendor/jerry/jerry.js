@@ -148,12 +148,18 @@ var getJSON = function(url, meth, data) {
       return params;
     },
 
-    getCans: function() {
+    getCans: function(more_keys) {
       var res = {},
-          key;
+          key, idx;
       for (key in this.restrictions) {
         res[key] = this.can(key);
-      };
+      }
+      if (more_keys)
+        for (idx in more_keys) {
+          key = more_keys[idx];
+          res[key] = this.can(key);
+        }
+
       return res;
     },
 
