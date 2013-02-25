@@ -167,7 +167,10 @@ angular.module('app.services', ['ngResource', 'ui']).
     return {
       require: 'ngModel',
       link: function(scope, elm, attrs, model) {
-        elm.editable(scope.$eval(attrs.editable));
+        elm.editable($.extend(scope.$eval(attrs.editable), {
+          emptytext: "(empty)",
+          unsavedclass: "editable-unsaved-changed"
+        }));
         model.$render = function() {
             elm.editable('setValue', model.$viewValue);
         };

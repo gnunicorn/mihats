@@ -3,10 +3,8 @@
 <div class="hero-unit">
 	<div class="row">
 		<h1>{{profile.profile_name}} <a href="#/{{profile.profile_name}}" class="btn">Back</a></h1>
+		<p editable="{type: 'textarea'}" editable-saved="saveProfile()" ng-model="profile.about"></p>
 		<hr>
-		<!-- <strong</h2>
-		<p editable editable-saved="saveProfile()" ng-model="profile.desc"></p>-->
-		<!-- <p><strong>Theme</strong> <span editable editable-saved="saveProfile()" ng-model="profile.theme"></span></p> -->
 		<div class="row">
 			<strong class="span">Images</strong>
 			<div class="span">

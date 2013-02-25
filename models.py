@@ -19,6 +19,7 @@ class Hat(ndb.Model):
 class Profile(ndb.Model):
     # keyname is profile id string
     added = ndb.DateTimeProperty('a', auto_now_add=True)
+    about = ndb.TextProperty('b')
     last_change = ndb.DateTimeProperty('c', auto_now=True)
     owner_email = ndb.StringProperty('o')
     edit_key = ndb.StringProperty('e')
@@ -26,3 +27,13 @@ class Profile(ndb.Model):
     images = ndb.StringProperty('i', repeated=True)
     current_hats = ndb.StructuredProperty(Hat, repeated=True)
     former_hats = ndb.StructuredProperty(Hat, repeated=True)
+
+    def as_json(self):
+        return {"profile_name": self.key.string_id(),
+                "id": self.key.string_id(),
+                "theme": self.theme,
+                "about": self.about,
+                "profile_link": "http://www.mihats.com/#/{0}".format(self.key.string_id()),
+                "images": self.images,
+                "current_hats": [x.as_json() for x in self.current_hats],
+                "former_hats": [x.as_json() for x in self.former_hats]}

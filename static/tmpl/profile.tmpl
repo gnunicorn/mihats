@@ -22,6 +22,9 @@
 		<div class="span4">
 			<div class="container-fluid">
 				<h1>{{profile.profile_name}}</h1>
+				<div class="row" ng-show="profile.about">
+					<p class="span">{{profile.about}}</p>
+				</div>
 
 				<div class="row" ng-show="profile.current_hats">
 					<div class="span5">
