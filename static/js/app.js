@@ -58,7 +58,7 @@ angular.module('app.services', ['ngResource', 'ui']).
 
     return {
       require: 'ngModel',
-      link: function(scope, element, attr, ctrl) {
+      link: function(scope, element, attr, ctrl, $log) {
           // set up
           var $formerImg, $img, timer = false;
 
@@ -114,7 +114,7 @@ angular.module('app.services', ['ngResource', 'ui']).
             if (angular.isArray(val)) {
               if (val.length > 1){
                 var idx = 1;
-                console.log(attr.timeout);
+                $log.log(attr.timeout);
                 timer = setInterval(function() {
                   load_image(val[idx]);
                   idx += 1;
@@ -274,7 +274,6 @@ var crowdbetApp = angular.module('app', ["app.services"]).
           $scope.userCan.add_image = ju.can("add_image", $scope.profile.images.length);
           $scope.userCan.add_hat = ju.can("add_hat", $scope.profile.current_hats.length + $scope.profile.former_hats.length);
         }
-        console.log($scope.userCan);
     }
     ju.promise.then(function() {$scope.$apply(updateCan);});
 
