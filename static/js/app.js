@@ -277,6 +277,8 @@ var crowdbetApp = angular.module('app', ["app.services"]).
     }
     ju.promise.then(function() {$scope.$apply(updateCan);});
 
+    $scope.ju = ju;
+
     $scope.saveProfile = function saveProfile(){
       // key is removed every time after, so don't forget to transfer it
       $scope.profile.key = key;
