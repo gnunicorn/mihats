@@ -2,7 +2,7 @@
 
 from google.appengine.ext.ndb import Key
 from google.appengine.api import mail
-from jerry.app_engine import jerry_login_proxy
+from jerry.app_engine import make_jerry_proxies
 from utils import verified_api_request, understand_post
 from uuid import uuid4
 
@@ -151,7 +151,7 @@ app = webapp2.WSGIApplication([
     ('/api/v1/profile/can_edit', CheckEditRights),
     ('/api/v1/profile/create', CreateProfile),
     ('/api/v1/profile/', EditProfile),
-    ('/api/v1/profile', EditProfile),
-    jerry_login_proxy(**config.jerry),
-    ('./*', MainHello)
+    ('/api/v1/profile', EditProfile)]
+    + make_jerry_proxies(config.jerry) +
+    [('./*', MainHello)
 ], debug=True)
