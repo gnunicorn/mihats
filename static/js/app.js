@@ -279,6 +279,17 @@ var crowdbetApp = angular.module('app', ["app.services"]).
 
     $scope.ju = ju;
 
+    $scope.$on("modalShow", function(){
+      if (!$scope.payment_src && ju.account.uuid){
+        $scope.$apply(function() {
+          $scope.payment_src = ju.get_payment_url({
+            key:"32bf496e7880b29ff6ca7f2a1772302e",
+            "widget": "p4_1",
+          });
+        });
+      }
+    });
+
     $scope.saveProfile = function saveProfile(){
       // key is removed every time after, so don't forget to transfer it
       $scope.profile.key = key;
